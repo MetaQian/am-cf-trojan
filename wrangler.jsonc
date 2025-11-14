@@ -21,8 +21,8 @@
   },
   "kv_namespaces": [
       {
-        "binding": "trojan",
-        "id": "amclubs"
+        "binding": "amclubs",
+        "id": "trojan"
       }
     ]
 }
