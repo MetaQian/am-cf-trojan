@@ -1459,7 +1459,8 @@ function handleRequestHeader(channelBuffer, id) {
     const slicedBuffer = new Uint8Array(channelBuffer.slice(1, 17));
     const slicedBufferString = stringify(slicedBuffer);
     const uuids = id.includes(',') ? id.split(",") : [id];
-
+    console.log('id:', id)
+    console.log('uuids:', uuids)
     isValidUser = uuids.some(userUuid => slicedBufferString === userUuid.trim()) || uuids.length === 1 && slicedBufferString === uuids[0].trim();
     if (!isValidUser) {
         return {
