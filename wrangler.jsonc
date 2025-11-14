@@ -18,5 +18,11 @@
   },
   "vars": {
     "UUID": "7f6a979a-8884-4ef7-928a-4e3d0440f6b8"
-  }
+  },
+  "kv_namespaces": [
+      {
+        "binding": "trojan",
+        "id": "amclubs"
+      }
+    ]
 }
