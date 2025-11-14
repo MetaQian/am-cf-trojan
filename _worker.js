@@ -137,6 +137,7 @@ function unsafeStringify(arr, offset = 0) {
 
 function stringify(arr, offset = 0) {
     const uuid = unsafeStringify(arr, offset);
+    console.log('string_uuid:', uuid)
     if (!isValidUserId(uuid)) {
         throw TypeError("Stringified ID is invalid");
     }
