@@ -137,8 +137,8 @@ function unsafeStringify(arr, offset = 0) {
 
 function stringify(arr, offset = 0) {
     const uuid = unsafeStringify(arr, offset);
-    console.log('arr:', arr)
-    console.log('string_uuid:', uuid)
+    log('arr:', arr);
+    log('string_uuid:', uuid);
     if (!isValidUserId(uuid)) {
         throw TypeError("Stringified ID is invalid");
     }
@@ -1054,7 +1054,7 @@ async function websvcExecutor(request) {
 
             const {
                 hasError,
-                //message,
+                message,
                 portRemote = 443,
                 addressRemote = '',
                 rawDataIndex,
@@ -1360,8 +1360,8 @@ async function handleUPOut(pipe, channelResponseHeader, log) {
                 }
             }
         }
-    })).catch((error) => {
-        error('dns udp has error' + error)
+    })).catch((err) => {
+        error('dns udp has error ' + (err && err.message ? err.message : String(err)));
     });
 
     const writer = transformStream.writable.getWriter();
@@ -1437,8 +1437,8 @@ async function serviceCall(ipType, remoteIp, remotePort, log) {
         await sendSocksGreeting();
         await handleAuthResponse();
         await sendSocksRequest();
-    } catch (error) {
-        error(error.message);
+    } catch (err) {
+        error(err && err.message ? err.message : String(err));
         return null;
     } finally {
         writer.releaseLock();
