@@ -46,6 +46,15 @@ export default {
         try {
             let { ID, PADDR, P64, P64PREFIX, S5, D_URL, ENABLE_LOG } = env;
 
+            // Fast path: non-WebSocket root GET returns login page without touching KV
+            const url = new URL(request.url);
+            const isWebSocket = request.headers.get('Upgrade') === 'websocket';
+            if (!isWebSocket && url.pathname.toLowerCase() === '/') {
+                // allow enabling logs via query even on login
+                enableLog = url.searchParams.get('ENABLE_LOG') || ENABLE_LOG || enableLog;
+                return await login(request, env);
+            }
+
             const kvCheckResponse = await check_kv(env);
             let kvData = {};
             if (!kvCheckResponse) {
@@ -53,7 +62,6 @@ export default {
                 log(`[fetch]--> kv_id = ${kvData.kv_id}, kv_pDomain = ${JSON.stringify(kvData.pDomain)}, kv_p64Domain = ${JSON.stringify(kvData.kv_p64Domain)}`);
             }
 
-            const url = new URL(request.url);
             enableLog = url.searchParams.get('ENABLE_LOG') || ENABLE_LOG || enableLog;
             id = (kvData.kv_id || ID || id).toLowerCase();
             log(`[fetch]--> id = ${id}`);
@@ -84,16 +92,13 @@ export default {
                 prType = prType.toLowerCase();
             }
 
-            if (request.headers.get('Upgrade') === 'websocket') {
+            if (isWebSocket) {
                 if (prType === xorDe(dataTypeTr, 'datatype')) {
                     return await websvcExecutorTr(request);
                 }
                 return await websvcExecutor(request);
             }
             switch (url.pathname.toLowerCase()) {
-                case '/': {
-                    return await login(request, env);
-                }
                 case `/${id}/get`: {
                     return get_kv(env);
                 }
