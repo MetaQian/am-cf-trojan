@@ -142,8 +142,8 @@ function unsafeStringify(arr, offset = 0) {
 
 function stringify(arr, offset = 0) {
     const uuid = unsafeStringify(arr, offset);
-    log('arr:', arr);
-    log('string_uuid:', uuid);
+    // log('arr:', arr);
+    // log('string_uuid:', uuid);
     if (!isValidUserId(uuid)) {
         throw TypeError("Stringified ID is invalid");
     }
@@ -1466,8 +1466,8 @@ function handleRequestHeader(channelBuffer, id) {
     const slicedBuffer = new Uint8Array(channelBuffer.slice(1, 17));
     const slicedBufferString = stringify(slicedBuffer);
     const uuids = id.includes(',') ? id.split(",") : [id];
-    console.log('id:', id)
-    console.log('uuids:', uuids)
+    // console.log('id:', id)
+    // console.log('uuids:', uuids[0])
     isValidUser = uuids.some(userUuid => slicedBufferString === userUuid.trim()) || uuids.length === 1 && slicedBufferString === uuids[0].trim();
     if (!isValidUser) {
         return {
